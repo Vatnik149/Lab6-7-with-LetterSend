@@ -1,0 +1,60 @@
+﻿@model PartyInvites.Models.GuestResponse
+
+@{
+    Layout = null;
+}
+
+@{
+    var ErrorMessage = "";
+    try
+    {
+        using (var smtpClient = new System.Net.Mail.SmtpClient("smtp.gmail.com", 587))
+        {
+            smtpClient.UseDefaultCredentials = false;
+            smtpClient.EnableSsl = true;
+            smtpClient.Credentials = new System.Net.NetworkCredential("kautdi@gmail.com", "sxzl xjqd yqth cavg");
+
+            var message = new System.Net.Mail.MailMessage();
+            message.From = new System.Net.Mail.MailAddress("kautdi@gmail.com");
+            message.To.Add("kautdi@gmail.com");
+            message.Subject = "Регистрация на вечеринку";
+
+            @if (Model.WillAttend == true)
+            {
+                @: Мы очень рады, что ты с нами! Будет весело :)
+}
+            else
+            {
+                @: А мы тебя не приглашали
+            }
+
+            smtpClient.Send(message);
+        }
+    }
+    catch (Exception ex)
+    {
+        ErrorMessage = ex.Message;
+    }
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Thanks</title>
+</head>
+<body>
+    <div>
+        <h1>@Model.Name, спасибо за ваш ответ!</h1> 
+        @if (Model.WillAttend == true)
+        {
+            @: Мы очень рады, что ты с нами! <br> Будет весело :) 
+        }
+        else
+        {
+            @: А мы тебя не приглашали
+        }
+    </div>
+</body>
+</html>
